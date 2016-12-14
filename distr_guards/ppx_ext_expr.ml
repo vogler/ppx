@@ -6,13 +6,19 @@ open Longident
 
 let rec mapper argv =
   let case_to_cases m = function
-    | { pc_lhs = { ppat_desc = Ppat_or (p1, p2) };
+    | { pc_lhs;
         pc_guard = Some guard;
         pc_rhs
       } ->
+        (* collect or-patterns into list *)
+        (* TODO fold over all constructors *)
+        let rec f a p = match p.ppat_desc with
+          | Ppat_or (p1, p2) -> f (f a p2) p1
+          | _ -> p :: a
+        in
+        let ps = f [] pc_lhs in
         let e = (mapper argv).expr m pc_rhs in
-        [Exp.case p1 ~guard e
-        ;Exp.case p2 ~guard e]
+        List.map (fun p -> Exp.case p ~guard e) ps
     | x -> [default_mapper.case m x]
   in
   let distr_mapper = { default_mapper with

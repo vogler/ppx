@@ -1,4 +1,4 @@
-type t = A of int | B
+type t = A of int | B of int
 
 (* problem *)
 (*
@@ -26,6 +26,10 @@ let f = function
 (* extension for pattern matches *)
 let f = function%distr (* [ppx_ext_expr.ml]: append extension to keyword, applies to all cases, no brackets, does not compile w/o ppx *)
   | A x, _ | _, A x when x<>0 -> 1
+  | _ -> 2
+
+let g = function%distr (* test nested or-patterns *)
+  | A x, _ | _, A x | B x, _ when x<>0 -> 1
   | _ -> 2
 
 (* let () = print_endline ("Result: " ^ string_of_int (f (A 0, A 1))) *)
