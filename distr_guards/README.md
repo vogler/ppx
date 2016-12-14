@@ -1,6 +1,6 @@
 This extension helps dealing with warning 57:
 
-    File "when.ml", line 28, characters 4-19:
+    File "example.ml", line 28, characters 4-19:
     Warning 57: Ambiguous or-pattern variables under guard;
     variable x may match different arguments. (See manual section 8.5)
 

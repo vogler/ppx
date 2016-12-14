@@ -26,7 +26,7 @@ let rec mapper argv =
       | x -> default_mapper.expr m x;
   }
 
-let () = register "when" mapper
+let () = register "distr_guards" mapper
 (*
 ocamlc -dparsetree foo.ml
 ocamlbuild -package compiler-libs.common ppx_foo.native
