@@ -28,8 +28,15 @@ let f = function%distr (* [ppx_ext_expr.ml]: append extension to keyword, applie
   | A x, _ | _, A x when x<>0 -> 1
   | _ -> 2
 
-let g = function%distr (* test nested or-patterns *)
+let g x = match%distr x with (* test match with nested or-patterns *)
   | A x, _ | _, A x | B x, _ when x<>0 -> 1
   | _ -> 2
+
+let h = function%distr (* do not transform nested matches that don't have the extension! *)
+  | A x, _ | _, A x | B x, _ when x<>0 -> 1
+  | x ->
+    match x with
+    | A x, _ | _, A x | B x, _ when x<>0 -> 1
+    | _ -> 2
 
 (* let () = print_endline ("Result: " ^ string_of_int (f (A 0, A 1))) *)
